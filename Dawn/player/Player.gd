@@ -3,6 +3,12 @@ extends KinematicBody
 onready var camera = $CameraRotation/Camera
 onready var camera_rotation = $CameraRotation
 
+onready var label_1 = $Debug/Labels/Label1
+onready var label_2 = $Debug/Labels/Label2
+onready var label_3 = $Debug/Labels/Label3
+onready var label_4 = $Debug/Labels/Label4
+onready var label_5 = $Debug/Labels/Label5
+
 var mouse_sensitivity = 0.007
 var joypad_sensertivity = 4
 var joypad_deadzone = 0.2
@@ -19,7 +25,7 @@ func _ready():
 
 func _unhandled_input(event):
 	# Mouse look input
-	if(event is InputEventMouseMotion):
+	if event is InputEventMouseMotion:
 		camera_rotation.rotate_y(-event.relative.x * mouse_sensitivity)
 		
 		camera.rotate_x(-event.relative.y * mouse_sensitivity)
@@ -46,7 +52,7 @@ func _physics_process(delta):
 	# Y velocity
 	velocity.y -= gravity * delta
 	if is_on_floor():
-		snap = Vector3(0, -1, 0)
+		snap = Vector3(0, -0.5, 0)
 		if Input.is_action_just_pressed("jump"):
 			snap = Vector3()
 			velocity.y = jump_speed
@@ -54,9 +60,17 @@ func _physics_process(delta):
 	# Apply Velocity
 	velocity += get_floor_velocity() * delta
 	velocity = move_and_slide_with_snap(velocity, snap, Vector3.UP, true)
+	
+	
+	# Debug labels
+	label_1.text = "velocity = " + str(velocity)
+	label_2.text = "speed = " + str(velocity.length())
+	label_3.text = "is_on_floor() = " + str(is_on_floor())
+	label_4.text = "floor_normal = " + str(get_floor_normal())
+	label_5.text = "is_on_wall = " + str(is_on_wall())
+	
 
-
-func get_gamepad_look_input(delta):
+func get_gamepad_look_input(delta) -> Vector2:
 	var input = Vector2()
 	input.x = Input.get_action_strength("look_left") - Input.get_action_strength("look_right")
 	input.y = Input.get_action_strength("look_up") - Input.get_action_strength("look_down")
@@ -69,7 +83,7 @@ func get_gamepad_look_input(delta):
 	return input
 
 
-func get_move_input(delta):
+func get_move_input(delta) -> Vector2:
 	var input = Vector3()
 	input.x =  Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	input.z =  Input.get_action_strength("move_back") - Input.get_action_strength("move_forward")
