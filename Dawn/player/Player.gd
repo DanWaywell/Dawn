@@ -56,10 +56,12 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("jump"):
 			snap = Vector3()
 			velocity.y = jump_speed
+			
+	# Moving platforms
+	velocity += get_floor_velocity() * delta
 	
 	# Apply Velocity
-	velocity += get_floor_velocity() * delta
-	velocity = move_and_slide_with_snap(velocity, snap, Vector3.UP, true)
+	velocity = move_and_slide_with_snap(velocity, snap, Vector3.UP, true, 4, deg2rad(89))
 	
 	
 	# Debug labels
@@ -68,9 +70,9 @@ func _physics_process(delta):
 	label_3.text = "is_on_floor() = " + str(is_on_floor())
 	label_4.text = "floor_normal = " + str(get_floor_normal())
 	label_5.text = "is_on_wall = " + str(is_on_wall())
-	
 
-func get_gamepad_look_input(delta) -> Vector2:
+
+func get_gamepad_look_input(delta):
 	var input = Vector2()
 	input.x = Input.get_action_strength("look_left") - Input.get_action_strength("look_right")
 	input.y = Input.get_action_strength("look_up") - Input.get_action_strength("look_down")
@@ -80,17 +82,19 @@ func get_gamepad_look_input(delta) -> Vector2:
 	else:
 		input = input.normalized() * ((input.length() - joypad_deadzone) / (1 - joypad_deadzone))
 	
-	return input
+	return input.clamped(1.0)
 
 
-func get_move_input(delta) -> Vector2:
-	var input = Vector3()
+func get_move_input(delta):
+	var input = Vector2()
 	input.x =  Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-	input.z =  Input.get_action_strength("move_back") - Input.get_action_strength("move_forward")
+	input.y =  Input.get_action_strength("move_back") - Input.get_action_strength("move_forward")
 	
 	if input.length() < joypad_deadzone:
-		input = Vector3()
+		input = Vector2()
 	else:
 		input = input.normalized() * ((input.length() - joypad_deadzone) / (1 - joypad_deadzone))
 	
-	return input
+	input = input.clamped(1.0)
+	
+	return Vector3(input.x, 0, input.y)
