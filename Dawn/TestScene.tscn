@@ -25,6 +25,7 @@ albedo_color = Color( 0.380392, 0.588235, 0.607843, 1 )
 albedo_color = Color( 0.156863, 0.447059, 0.160784, 1 )
 
 [node name="TestScene" type="Spatial"]
+transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 

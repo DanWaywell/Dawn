@@ -12,9 +12,10 @@ onready var label_5 = $Debug/Labels/Label5
 var mouse_sensitivity = 0.007
 var joypad_sensertivity = 4
 var joypad_deadzone = 0.2
-var speed = 6
-var jump_speed = 12
-var gravity = 30
+var speed = 80
+var min_speed = speed / 4
+var jump_speed = 120
+var gravity = 300
 var velocity = Vector3()
 var snap = Vector3()
 
@@ -46,13 +47,19 @@ func _physics_process(delta):
 	direction = direction.rotated(Vector3.UP, camera_rotation.rotation.y)
 	
 	# X Z Velocity
-	velocity.x = direction.x * speed
-	velocity.z = direction.z * speed
+	if direction:
+		velocity.x = direction.normalized().x * min_speed
+		velocity.z = direction.normalized().z * min_speed
+		velocity.x += direction.x * speed
+		velocity.z += direction.z * speed
+	else:
+		velocity.x = 0
+		velocity.z = 0
 	
 	# Y velocity
 	velocity.y -= gravity * delta
 	if is_on_floor():
-		snap = Vector3(0, -0.5, 0)
+		snap = Vector3(0, -5, 0)
 		if Input.is_action_just_pressed("jump"):
 			snap = Vector3()
 			velocity.y = jump_speed
