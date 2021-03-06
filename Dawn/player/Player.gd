@@ -2,6 +2,7 @@ extends KinematicBody
 
 onready var camera = $CameraRotation/Camera
 onready var camera_rotation = $CameraRotation
+onready var jump_timer = $JumpTimer
 
 onready var label_1 = $Debug/Labels/Label1
 onready var label_2 = $Debug/Labels/Label2
@@ -13,7 +14,7 @@ var mouse_sensitivity = 0.007
 var joypad_sensertivity = 4
 var joypad_deadzone = 0.2
 var min_speed = 20
-var max_speed = 120 -min_speed
+var max_speed = 80 -min_speed
 var jump_speed = 120
 var gravity = 300
 var velocity = Vector3()
@@ -21,6 +22,7 @@ var snap = Vector3()
 var snap_on = Vector3(0, -5, 0)
 var air_time = 0
 var coyote_time = 0.2
+var jump = false
 
 
 func _ready():
@@ -60,12 +62,15 @@ func _physics_process(delta):
 	
 	# Y velocity
 	velocity.y -= gravity * delta
+	if Input.is_action_just_pressed("jump"):
+		jump_timer.start()
 	if is_on_floor():
 		snap = snap_on
 		air_time = 0
-	if Input.is_action_just_pressed("jump") and air_time < coyote_time:
+	if not jump_timer.is_stopped() and air_time < coyote_time:
 		snap = Vector3()
 		velocity.y = jump_speed
+		jump_timer.stop()
 			
 	# Moving platforms
 	velocity += get_floor_velocity() * delta
