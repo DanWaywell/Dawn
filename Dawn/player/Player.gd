@@ -19,6 +19,8 @@ var gravity = 300
 var velocity = Vector3()
 var snap = Vector3()
 var snap_on = Vector3(0, -5, 0)
+var air_time = 0
+var coyote_time = 0.2
 
 
 func _ready():
@@ -35,6 +37,7 @@ func _unhandled_input(event):
 
 
 func _physics_process(delta):
+	air_time += delta
 	# Gamepad look input
 	var look_input = get_gamepad_look_input(delta)
 	if look_input:
@@ -59,9 +62,10 @@ func _physics_process(delta):
 	velocity.y -= gravity * delta
 	if is_on_floor():
 		snap = snap_on
-		if Input.is_action_just_pressed("jump"):
-			snap = Vector3()
-			velocity.y = jump_speed
+		air_time = 0
+	if Input.is_action_just_pressed("jump") and air_time < coyote_time:
+		snap = Vector3()
+		velocity.y = jump_speed
 			
 	# Moving platforms
 	velocity += get_floor_velocity() * delta
