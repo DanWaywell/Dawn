@@ -1,10 +1,51 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.2
 height = 1.4
+
+[sub_resource type="Animation" id=2]
+resource_name = "crouch"
+length = 0.2
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("CollisionShape:shape:height")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.4, 0.1 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionShape:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0.9, 0 ), Vector3( 0, 0.25, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("CameraRotation:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 1.6, 0 ), Vector3( 0, 0.3, 0 ) ]
+}
 
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -55,3 +96,10 @@ margin_bottom = 68.0
 [node name="Label5" type="Label" parent="Debug/Labels"]
 margin_top = 72.0
 margin_bottom = 86.0
+
+[node name="RayPlayerHeight" type="RayCast" parent="."]
+enabled = true
+cast_to = Vector3( 0, 1.801, 0 )
+
+[node name="AnimationPlayerCrouch" type="AnimationPlayer" parent="."]
+anims/crouch = SubResource( 2 )

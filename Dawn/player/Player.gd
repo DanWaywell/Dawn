@@ -3,6 +3,8 @@ extends KinematicBody
 onready var camera = $CameraRotation/Camera
 onready var camera_rotation = $CameraRotation
 onready var pre_jump_timer = $PreJumpTimer
+onready var ray_player_height = $RayPlayerHeight
+onready var anim_player_crouch = $AnimationPlayerCrouch
 
 onready var label_1 = $Debug/Labels/Label1
 onready var label_2 = $Debug/Labels/Label2
@@ -22,6 +24,8 @@ var snap = Vector3()
 var snap_on = Vector3(0, -5, 0)
 var air_time = 0
 var coyote_time = 0.2
+var crouch
+var is_crouching = false
 
 
 func _ready():
@@ -79,9 +83,18 @@ func _physics_process(delta):
 	# Apply Velocity
 	velocity = move_and_slide_with_snap(velocity, snap, Vector3.UP, true, 4, deg2rad(89))
 	
+	if Input.is_action_just_pressed("crouch"):
+		crouch = !crouch
+	if crouch and not is_crouching:
+		anim_player_crouch.play("crouch")
+		is_crouching = true
+	elif not crouch and is_crouching and not ray_player_height.is_colliding():
+		anim_player_crouch.play_backwards("crouch")
+		is_crouching = false
+	
 	
 	# Debug labels
-	label_1.text = "velocity = " + str(velocity)
+	label_1.text = str(anim_player_crouch.current_animation)
 	label_2.text = "speed = " + str(velocity.length())
 	label_3.text = "is_on_floor() = " + str(is_on_floor())
 	label_4.text = "floor_normal = " + str(get_floor_normal())
