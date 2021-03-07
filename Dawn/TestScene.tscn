@@ -1,31 +1,22 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/testing_zone/static_bodies/BarrelDrum.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/testing_zone/static_bodies/TowerPiece.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/testing_zone/static_bodies/Ground.tscn" type="PackedScene" id=5]
+[ext_resource path="res://TestScene.gd" type="Script" id=6]
+[ext_resource path="res://assets/testing_zone/static_bodies/Crate2x2.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/testing_zone/static_bodies/Crate1x1.tscn" type="PackedScene" id=8]
 
 [sub_resource type="ProceduralSky" id=1]
 
 [sub_resource type="Environment" id=2]
-background_mode = 2
+background_mode = 1
 background_sky = SubResource( 1 )
-
-[sub_resource type="BoxShape" id=3]
-extents = Vector3( 50, 1, 50 )
-
-[sub_resource type="CubeMesh" id=4]
-size = Vector3( 100, 2, 100 )
-
-[sub_resource type="SpatialMaterial" id=5]
-albedo_color = Color( 0.380392, 0.588235, 0.607843, 1 )
-
-[sub_resource type="BoxShape" id=6]
-
-[sub_resource type="CubeMesh" id=7]
-
-[sub_resource type="SpatialMaterial" id=8]
-albedo_color = Color( 0.156863, 0.447059, 0.160784, 1 )
+ambient_light_color = Color( 0.317647, 0.305882, 0.305882, 1 )
 
 [node name="TestScene" type="Spatial"]
-transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0 )
+script = ExtResource( 6 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 
@@ -35,323 +26,54 @@ transform = Transform( 10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0 )
 environment = SubResource( 2 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="Environment"]
-transform = Transform( 0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 20, 0 )
-shadow_enabled = true
-__meta__ = {
-"_edit_lock_": true
-}
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 20, 0 )
+directional_shadow_max_distance = 1000.0
 
 [node name="Terrain" type="Spatial" parent="Environment"]
 
-[node name="Ground" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
+[node name="Ground" parent="Environment/Terrain" instance=ExtResource( 5 )]
 
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Ground"]
-shape = SubResource( 3 )
+[node name="Crate2x2" parent="Environment/Terrain" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.04067, 7 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Ground"]
-mesh = SubResource( 4 )
-material/0 = SubResource( 5 )
+[node name="Crate2x3" parent="Environment/Terrain" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.04067, 7 )
 
-[node name="Box" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 5.15284, 0.500998, -8.66102 )
-__meta__ = {
-"_edit_group_": true
-}
+[node name="Crate2x4" parent="Environment/Terrain" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3.04067, 7 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box"]
-shape = SubResource( 6 )
+[node name="TowerPiece" parent="Environment/Terrain" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -6 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+[node name="TowerPiece2" parent="Environment/Terrain" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6, 2.3, -6 )
 
-[node name="Box2" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.807, 1, -1.18971 )
-__meta__ = {
-"_edit_group_": true
-}
+[node name="TowerPiece3" parent="Environment/Terrain" instance=ExtResource( 4 )]
+transform = Transform( -1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 6, 4.6, -6 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box2"]
-shape = SubResource( 6 )
+[node name="TowerPiece4" parent="Environment/Terrain" instance=ExtResource( 4 )]
+transform = Transform( 1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 6, 6.9, -6 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box2"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+[node name="BarrelDrum" parent="Environment/Terrain" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.55744, 0.490337, -6.31739 )
 
-[node name="Box3" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.780354, 1, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
+[node name="BarrelDrum2" parent="Environment/Terrain" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.02174, 0.490492, -6.89472 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box3"]
-shape = SubResource( 6 )
+[node name="BarrelDrum3" parent="Environment/Terrain" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.76113, 0.490633, -3.73483 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box3"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+[node name="BarrelDrum4" parent="Environment/Terrain" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.24354, 1.38866, -6.60215 )
 
-[node name="Box6" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.21965, 1, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
+[node name="Crate1x1" parent="Environment/Terrain" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.97052, 0.540974, 4 )
 
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box6"]
-shape = SubResource( 6 )
+[node name="Crate1x3" parent="Environment/Terrain" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.97052, 0.540974, 3.41583 )
 
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box6"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+[node name="Crate1x4" parent="Environment/Terrain" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.473566, 0.540974, 6.46125 )
 
-[node name="Box7" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.21965, 3, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box7"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box7"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box8" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.21965, 1, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box8"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box8"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box9" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.21965, 3, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box9"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box9"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box11" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.21965, 3, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box11"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box11"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box12" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.21965, 1, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box12"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box12"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box10" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.21965, 5, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box10"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box10"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box13" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.109397, 0.109397, -0.98796, -0.707107, -0.707107, 0, -0.698593, 0.698593, 0.15471, 4.4751, 1.38698, -17.404 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box13"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box13"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box14" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.566247, 0.566247, -0.59894, -0.707107, -0.707107, 0, -0.423515, 0.423515, 0.800794, 5.58599, 2.8012, -14.804 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box14"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box14"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box15" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, 0, 0, 1, 7.30352, 1.38698, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box15"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box15"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box16" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, 0, 0, 1, 7.30352, 4.21541, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box16"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box16"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box17" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.371491, 0.371491, 0.850875, -0.707107, -0.707107, 0, 0.60166, -0.60166, 0.525368, 8.71774, 2.8012, -13.6918 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box17"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box17"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box18" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.707107, 0.707107, 0, -0.707107, -0.707107, 0, 0, 0, 1, 10.1319, 1.38698, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box18"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box18"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box19" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.426158, 0.904649, 0, -0.904649, -0.426158, 0, 0, 0, 1, 14.1204, 0.513415, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box19"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box19"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box20" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.426158, 0.904649, 0, -0.904649, -0.426158, 0, 0, 0, 1, 14.9727, 2.32272, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box20"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box20"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box21" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.426158, 0.904649, 0, -0.904649, -0.426158, 0, 0, 0, 1, 15.825, 4.13201, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box21"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box21"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box22" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.426158, 0.904649, 0, -0.904649, -0.426158, 0, 0, 0, 1, 17.6343, 3.2797, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box22"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box22"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box23" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( -0.426158, 0.904649, 0, -0.904649, -0.426158, 0, 0, 0, 1, 19.4436, 2.42736, -16.1215 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box23"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box23"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box4" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.71728, 1, -3.01008 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box4"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box4"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
-
-[node name="Box5" type="StaticBody" parent="Environment/Terrain"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.59038, 1, -10.973 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="CollisionShape" type="CollisionShape" parent="Environment/Terrain/Box5"]
-shape = SubResource( 6 )
-
-[node name="MeshInstance" type="MeshInstance" parent="Environment/Terrain/Box5"]
-mesh = SubResource( 7 )
-material/0 = SubResource( 8 )
+[node name="Crate1x2" parent="Environment/Terrain" instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.67142, 1.54097, 3.80888 )
