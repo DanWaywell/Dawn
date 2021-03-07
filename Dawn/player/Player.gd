@@ -27,9 +27,6 @@ var coyote_time = 0.2
 var crouch
 var is_crouching = false
 
-var active = true
-var state = "default" # under_water
-var previous_state = ""
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -45,24 +42,6 @@ func _unhandled_input(event):
 
 
 func _physics_process(delta):
-	# Enter new state
-	if state != previous_state:
-		match state:
-			"default":
-				pass
-			"under_water":
-				pass
-		previous_state = state
-	
-	# Process state
-	match state:
-		"default":
-			process_default_state(delta)
-		"under_water":
-			process_under_water_state(delta)
-
-
-func process_default_state(delta):
 	# Air time counter
 	air_time += delta
 	
@@ -148,7 +127,3 @@ func get_move_input():
 	input = input.clamped(1.0)
 	
 	return Vector3(input.x, 0, input.y)
-
-
-func process_under_water_state(delta):
-	pass
