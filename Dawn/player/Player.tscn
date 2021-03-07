@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.2
 height = 1.4
+
+[sub_resource type="SphereMesh" id=3]
+radius = 0.2
+height = 0.4
 
 [sub_resource type="Animation" id=2]
 resource_name = "crouch"
@@ -58,9 +62,13 @@ shape = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0 )
 
 [node name="Camera" type="Camera" parent="CameraRotation"]
-fov = 90.0
 near = 0.01
 far = 1000.0
+
+[node name="MeshInstance" type="MeshInstance" parent="CameraRotation"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0 )
+mesh = SubResource( 3 )
+material/0 = null
 
 [node name="PreJumpTimer" type="Timer" parent="."]
 process_mode = 0
