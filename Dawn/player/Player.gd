@@ -12,19 +12,21 @@ onready var label_3 = $Debug/Labels/Label3
 onready var label_4 = $Debug/Labels/Label4
 onready var label_5 = $Debug/Labels/Label5
 
-const SPEED_MIN = 20
+const SPEED_MIN = 10
 const SPEED_DEFAULT = 60
-const SPEED_CROUCH = 30
+const SPEED_CROUCH = 20
+const JUMP_SPEED = 80
+const GRAVITY = 300
+const SNAP = Vector3(0, -5, 0)
 
 var mouse_sensitivity = 0.007
 var joypad_sensertivity = 4
 var joypad_deadzone = 0.2
 var speed = SPEED_DEFAULT
-var jump_speed = 120
-var gravity = 300
+var jump_speed = JUMP_SPEED
+var gravity = GRAVITY
 var velocity = Vector3()
 var snap = Vector3()
-var snap_on = Vector3(0, -5, 0)
 var air_time = 0
 var coyote_time = 0.2
 var crouch
@@ -33,7 +35,7 @@ var is_crouching = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
+	
 
 func _unhandled_input(event):
 	# Mouse look input
@@ -73,7 +75,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump"):
 		pre_jump_timer.start()
 	if is_on_floor():
-		snap = snap_on
+		snap = SNAP
 		air_time = 0
 	if not pre_jump_timer.is_stopped() and air_time < coyote_time:
 		snap = Vector3()
@@ -83,6 +85,7 @@ func _physics_process(delta):
 	# Moving platforms
 	velocity += get_floor_velocity() * delta
 	
+	label_2.text = "speed = " + str(velocity.length())
 	# Apply Velocity
 	velocity = move_and_slide_with_snap(velocity, snap, Vector3.UP, true, 4, deg2rad(89))
 	
@@ -100,7 +103,6 @@ func _physics_process(delta):
 	
 	# Debug labels
 	label_1.text = str(anim_player_crouch.current_animation)
-	label_2.text = "speed = " + str(velocity.length())
 	label_3.text = "is_on_floor() = " + str(is_on_floor())
 	label_4.text = "floor_normal = " + str(get_floor_normal())
 	label_5.text = "is_on_wall = " + str(is_on_wall())
