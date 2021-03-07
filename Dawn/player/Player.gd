@@ -33,6 +33,10 @@ var previous_state = ""
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	for node in get_tree().get_nodes_in_group("swimmable"):
+		node.connect("body_entered", self, "swimmable_area_entered")
+		node.connect("body_exited", self, "swimmable_area_exited")
 
 
 func _unhandled_input(event):
@@ -51,7 +55,12 @@ func _physics_process(delta):
 			"default":
 				pass
 			"under_water":
-				pass
+				if not is_crouching:
+					anim_player_crouch.play("crouch")
+					is_crouching = true
+			_:
+				assert (false, "Error Incorect State Set!")
+				
 		previous_state = state
 	
 	# Process state
@@ -67,12 +76,7 @@ func process_default_state(delta):
 	air_time += delta
 	
 	# Gamepad look input
-	var look_input = get_look_input()
-	if look_input:
-		camera_rotation.rotate_y(deg2rad(look_input.x * joypad_sensertivity))
-		
-		camera.rotate_x(deg2rad(look_input.y * joypad_sensertivity))
-		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
+	process_look_input()
 	
 	# Move input
 	var direction = get_move_input()
@@ -135,6 +139,15 @@ func get_look_input():
 	return input.clamped(1.0)
 
 
+func process_look_input():
+	var look_input = get_look_input()
+	if look_input:
+		camera_rotation.rotate_y(deg2rad(look_input.x * joypad_sensertivity))
+		
+		camera.rotate_x(deg2rad(look_input.y * joypad_sensertivity))
+		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
+
+
 func get_move_input():
 	var input = Vector2()
 	input.x =  Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
@@ -151,4 +164,28 @@ func get_move_input():
 
 
 func process_under_water_state(delta):
-	pass
+	# Gamepad look input
+	process_look_input()
+	# Input X Z
+	var direction = get_move_input()
+	direction = direction.rotated(Vector3.RIGHT, camera.rotation.x)
+	direction = direction.rotated(Vector3.UP, camera_rotation.rotation.y)
+	# Input Y
+	if Input.is_action_pressed("jump"):
+		direction.y += 1
+	if Input.is_action_pressed("crouch"):
+		direction.y -= 1
+	
+	velocity = velocity.linear_interpolate(direction * max_speed, 0.05)
+	
+	velocity = move_and_slide(velocity)
+
+
+func swimmable_area_entered(body):
+	if body == self:
+		state = "under_water"
+
+
+func swimmable_area_exited(body):
+	if body == self:
+		state = "default"
