@@ -12,11 +12,14 @@ onready var label_3 = $Debug/Labels/Label3
 onready var label_4 = $Debug/Labels/Label4
 onready var label_5 = $Debug/Labels/Label5
 
+const SPEED_MIN = 20
+const SPEED_DEFAULT = 60
+const SPEED_CROUCH = 30
+
 var mouse_sensitivity = 0.007
 var joypad_sensertivity = 4
 var joypad_deadzone = 0.2
-var min_speed = 20
-var max_speed = 80 -min_speed
+var speed = SPEED_DEFAULT
 var jump_speed = 120
 var gravity = 300
 var velocity = Vector3()
@@ -59,8 +62,8 @@ func _physics_process(delta):
 	
 	# X Z Velocity
 	if direction:
-		velocity.x = direction.x * max_speed + direction.normalized().x * min_speed
-		velocity.z = direction.z * max_speed + direction.normalized().z * min_speed
+		velocity.x = direction.x * speed + direction.normalized().x * SPEED_MIN
+		velocity.z = direction.z * speed + direction.normalized().z * SPEED_MIN
 	else:
 		velocity.x = 0
 		velocity.z = 0
@@ -88,9 +91,11 @@ func _physics_process(delta):
 	if crouch and not is_crouching:
 		anim_player_crouch.play("crouch")
 		is_crouching = true
+		speed = SPEED_CROUCH
 	elif not crouch and is_crouching and not ray_player_height.is_colliding():
 		anim_player_crouch.play_backwards("crouch")
 		is_crouching = false
+		speed = SPEED_DEFAULT
 	
 	
 	# Debug labels
