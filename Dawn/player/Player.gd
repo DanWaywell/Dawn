@@ -15,6 +15,7 @@ onready var label_5 = $Debug/Labels/Label5
 const SPEED_MIN = 10
 const SPEED_DEFAULT = 60
 const SPEED_CROUCH = 20
+const SPEED_WALK = 30
 const JUMP_SPEED = 80
 const GRAVITY = 300
 const SNAP = Vector3(0, -5, 0)
@@ -64,8 +65,12 @@ func _physics_process(delta):
 	
 	# X Z Velocity
 	if direction:
-		velocity.x = direction.x * speed + direction.normalized().x * SPEED_MIN
-		velocity.z = direction.z * speed + direction.normalized().z * SPEED_MIN
+		if Input.is_action_pressed("walk"):
+			velocity.x = direction.normalized().x * SPEED_WALK
+			velocity.z = direction.normalized().z * SPEED_WALK
+		else:
+			velocity.x = direction.x * speed + direction.normalized().x * SPEED_MIN
+			velocity.z = direction.z * speed + direction.normalized().z * SPEED_MIN
 	else:
 		velocity.x = 0
 		velocity.z = 0
