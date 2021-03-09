@@ -3,7 +3,8 @@
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 
 [sub_resource type="CapsuleShape" id=1]
-radius = 0.2
+radius = 0.15
+height = 1.45
 
 [sub_resource type="Animation" id=2]
 resource_name = "crouch"
@@ -19,7 +20,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 1.0, 0.1 ]
+"values": [ 1.45, 0.650189 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("CollisionShape:translation")
@@ -31,7 +32,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0.7, 0 ), Vector3( 0, 0.25, 0 ) ]
+"values": [ Vector3( 0, 0.875, 0 ), Vector3( 0, 0.475, 0 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("CameraRotation:translation")
@@ -43,18 +44,18 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 1.2, 0 ), Vector3( 0, 0.45, 0 ) ]
+"values": [ Vector3( 0, 1.6, 0 ), Vector3( 0, 0.8, 0 ) ]
 }
 
 [node name="Player" type="KinematicBody"]
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.7, 0 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.875, 0 )
 shape = SubResource( 1 )
 
 [node name="CameraRotation" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0 )
 
 [node name="Camera" type="Camera" parent="CameraRotation"]
 fov = 90.0

@@ -20,7 +20,7 @@ const JUMP_SPEED = 80
 const GRAVITY = 300
 const SNAP = Vector3(0, -5, 0)
 
-var mouse_sensitivity = 0.007
+var mouse_sensitivity = 0.008
 var joypad_sensertivity = 4
 var joypad_deadzone = 0.2
 var speed = SPEED_DEFAULT
