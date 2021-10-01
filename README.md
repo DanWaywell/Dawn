@@ -1,4 +1,4 @@
 # Dawn
-Retro graphics sci-fy FPS
+Retro sci-fy FPS
 
 Status: Prototyping
